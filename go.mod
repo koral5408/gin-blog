@@ -10,6 +10,7 @@ require (
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-ini/ini v1.52.0
 	github.com/jinzhu/gorm v1.9.12
+	github.com/robfig/cron v1.2.0
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.5
 	github.com/unknwon/com v1.0.1
