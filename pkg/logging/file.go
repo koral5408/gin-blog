@@ -34,12 +34,12 @@ func openLogFile(fileName, filePath string) (*os.File, error) {
 	}
 
 	err = file.IsNotExistMkDir(src)
-	if err == nil {
+	if err != nil {
 		return nil, fmt.Errorf("file.IsNotExistMkDir src:%s, err:%v",src, err)
 	}
 
 	f,err := file.Open(src + fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err == nil {
+	if err != nil {
 		return nil, fmt.Errorf("Fail to OpenFIle : %v",err)
 	}
 
