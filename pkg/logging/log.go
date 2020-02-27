@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"gin-blog/pkg/file"
 )
 
 type Level int
@@ -35,7 +34,7 @@ func Setup() {
 	var err error
 	filePath := getLogFilePath()
 	fileName := getLogFileName()
-	F, err = file.MustOpen(filePath)
+	F, err = openLogFile(fileName,filePath)
 	if err != nil {
 		log.Fatalf("logging.Setup err: %v", err)
 	}
