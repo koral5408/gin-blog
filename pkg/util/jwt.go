@@ -1,12 +1,12 @@
 package util
 
 import (
-	jwt "github.com/dgrijalva/jwt-go"
 	"gin-blog/pkg/setting"
+	jwt "github.com/dgrijalva/jwt-go"
 	"time"
 )
 
-var jwtSecret = []byte(setting.JwtSecret)
+var jwtSecret = []byte(setting.AppSetting.JwtSecret)
 
 type Claims struct {
 	Username string `json:"username"`
@@ -15,16 +15,16 @@ type Claims struct {
 }
 
 //根据参数，用户名，密码，时间，秘钥等产生一个令牌
-func GenerateToken(username, password string)(string, error) {
+func GenerateToken(username, password string) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 
 	claims := Claims{
 		username,
 		password,
-		jwt.StandardClaims {
-			ExpiresAt:expireTime.Unix(),
-			Issuer:"gin-blog",
+		jwt.StandardClaims{
+			ExpiresAt: expireTime.Unix(),
+			Issuer:    "gin-blog",
 		},
 	}
 
@@ -34,8 +34,8 @@ func GenerateToken(username, password string)(string, error) {
 	return token, err
 }
 
-func ParseToken(token string)(*Claims, error){
-	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token)(interface{}, error){
+func ParseToken(token string) (*Claims, error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
 
