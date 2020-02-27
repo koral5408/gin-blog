@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"gin-blog/pkg/file"
 )
 
 type Level int
@@ -29,10 +30,15 @@ const (
 	FATAL
 )
 
-//初始化，包引用时自动开始执行
-func init() {
-	filePath := getLogFileFullPath()
-	F = openLogFile(filePath)
+//初始化，包引用时自动开始执行 Setup initialize the log instance
+func Setup() {
+	var err error
+	filePath := getLogFilePath()
+	fileName := getLogFileName()
+	F, err = file.MustOpen(filePath)
+	if err != nil {
+		log.Fatalf("logging.Setup err: %v", err)
+	}
 
 	logger = log.New(F, DefaultPrefix, log.LstdFlags)
 }
