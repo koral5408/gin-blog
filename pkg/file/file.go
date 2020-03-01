@@ -1,10 +1,11 @@
 package file
 
 import (
+	"fmt"
+	"io/ioutil"
+	"mime/multipart"
 	"os"
 	"path"
-	"mime/multipart"
-	"io/ioutil"
 )
 
 func GetSize(f multipart.File) (int, error) {
@@ -20,8 +21,10 @@ func GetExt(fileName string) string {
 func CheckExist(src string) bool {
 	_, err := os.Stat(src)
 
-	return os.IsNotExist(err)
+	//存在Exist 则为true， 不存在返回 false
+	return !os.IsNotExist(err)
 }
+
 
 func CheckPermission(src string) bool {
 	_, err := os.Stat(src)
@@ -31,6 +34,7 @@ func CheckPermission(src string) bool {
 
 func IsNotExistMkDir(src string) error {
 	if exist := CheckExist(src); exist == false {
+		fmt.Println(exist)
 		if err:= MkDir(src); err != nil {
 			return err
 		}
@@ -41,6 +45,8 @@ func IsNotExistMkDir(src string) error {
 
 func MkDir(src string) error {
 	err := os.MkdirAll(src, os.ModePerm)
+	fmt.Println(src)
+	fmt.Println(err)
 	if err != nil {
 		return err
 	}
@@ -56,5 +62,6 @@ func Open(name string, flag int, perm os.FileMode) (*os.File, error) {
 	return f,nil
 }
 func MustOpen(fileName, filePath string) (os.File, error) {
-
+	//file os.File
+	return os.File{}, nil
 }
