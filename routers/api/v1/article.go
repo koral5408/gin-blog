@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"gin-blog/pkg/app"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"gin-blog/models"
@@ -22,11 +23,17 @@ import (
 //@Router /api/vi/articles/{id} [get]
 //获取单个文章
 func GetArticle(c *gin.Context) {
+	appG := app.Gin{c}
 	id := com.StrTo(c.Param("id")).MustInt()
-
 	valid := validation.Validation{}
-	valid.Min(id, 1, "id").Message("ID必须大于")
+	valid.Min(id, 1, "id").Message("ID必须大于0")
 
+	if valid.HasErrors() {
+		app.MarkErrors(valid.Errors)
+		appG.Response(http.StatusOK, e.INVALID_PARAMS, nil)
+	}
+
+	articleService := article_service.Article{ID: id}
 	code := e.INVALID_PARAMS
 	var data interface{}
 	if !valid.HasErrors() {
